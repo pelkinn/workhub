@@ -8,7 +8,7 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get('health')
-  @ApiOkResponse({ description: 'Service is healthy.' })
+  @ApiOkResponse({ description: 'Сервис работает нормально.' })
   getHealth() {
     return this.appService.getHealth();
   }
