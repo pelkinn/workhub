@@ -23,7 +23,7 @@ import { CurrentUser } from "./decorators/current-user.decorator";
 import { RegisterResponseDto } from "./dto/register-response.dto";
 
 @ApiTags("auth")
-@Controller()
+@Controller("auth")
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
@@ -39,7 +39,7 @@ export class AuthController {
     status: 409,
     description: "Пользователь с таким email уже существует",
   })
-  async register(@Body() registerDto: RegisterDto) {
+  register(@Body() registerDto: RegisterDto): Promise<RegisterResponseDto> {
     return this.authService.register(registerDto);
   }
 
@@ -52,7 +52,7 @@ export class AuthController {
     type: AuthResponseDto,
   })
   @ApiResponse({ status: 401, description: "Неверные учетные данные" })
-  async login(@Body() loginDto: LoginDto) {
+  login(@Body() loginDto: LoginDto): Promise<AuthResponseDto> {
     return this.authService.login(loginDto);
   }
 
@@ -66,7 +66,7 @@ export class AuthController {
     type: UserResponseDto,
   })
   @ApiResponse({ status: 401, description: "Не авторизован" })
-  async getMe(@CurrentUser() user: UserResponseDto) {
+  getMe(@CurrentUser() user: UserResponseDto): UserResponseDto {
     return user;
   }
 }

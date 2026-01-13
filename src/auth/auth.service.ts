@@ -39,8 +39,6 @@ export class AuthService {
         id: true,
         email: true,
         name: true,
-        createdAt: true,
-        updatedAt: true,
       },
     });
 
@@ -66,17 +64,27 @@ export class AuthService {
       throw new UnauthorizedException("Неверные учетные данные");
     }
 
+    // Получение пользователя без пароля для ответа
+    const userWithoutPassword = await this.prisma.user.findUnique({
+      where: { id: user.id },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+      },
+    });
+
+    if (!userWithoutPassword) {
+      throw new UnauthorizedException("Пользователь не найден");
+    }
+
     // Генерация JWT токена
     const payload = { sub: user.id, email: user.email };
     const access_token = this.jwtService.sign(payload);
 
     return {
       access_token,
-      user: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-      },
+      user: userWithoutPassword,
     };
   }
 
@@ -87,8 +95,6 @@ export class AuthService {
         id: true,
         email: true,
         name: true,
-        createdAt: true,
-        updatedAt: true,
       },
     });
 
