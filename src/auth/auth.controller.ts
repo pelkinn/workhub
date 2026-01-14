@@ -68,7 +68,6 @@ export class AuthController {
   })
   @ApiResponse({ status: 401, description: "Не авторизован" })
   async getMe(@CurrentUser() user: JwtUserDto): Promise<UserResponseDto> {
-    console.log(user);
     return this.authService.getMe(user.userId);
   }
 }
