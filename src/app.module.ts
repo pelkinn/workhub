@@ -7,9 +7,10 @@ import { ProjectModule } from './projects/projects.module';
 import { MembershipsModule } from './memberships/memberships.module';
 import { TasksModule } from './tasks/tasks.module';
 import { InvitationsModule } from './invitations/invitations.module';
+import { QueuesModule } from './queues/queues.module';
 
 @Module({
-  imports: [PrismaModule, AuthModule, ProjectModule, MembershipsModule, TasksModule, InvitationsModule],
+  imports: [PrismaModule, AuthModule, ProjectModule, MembershipsModule, TasksModule, InvitationsModule, QueuesModule],
   controllers: [AppController],
   providers: [AppService],
 })
