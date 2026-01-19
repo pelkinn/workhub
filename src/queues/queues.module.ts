@@ -1,7 +1,9 @@
 import { Module } from "@nestjs/common";
 import { BullModule } from "@nestjs/bullmq";
 import { TestProcessor } from "./processors/test.processor";
+import { ReminderProcessor } from "./processors/reminder.processor";
 import { QueuesService } from "./queues.service";
+import { PrismaModule } from "@/prisma/prisma.module";
 
 @Module({
   imports: [
@@ -14,9 +16,12 @@ import { QueuesService } from "./queues.service";
     BullModule.registerQueue({
       name: "test-queue",
     }),
+    BullModule.registerQueue({
+      name: "reminders-queue",
+    }),
+    PrismaModule,
   ],
-  providers: [TestProcessor, QueuesService],
+  providers: [TestProcessor, ReminderProcessor, QueuesService],
   exports: [QueuesService],
 })
 export class QueuesModule {}
-

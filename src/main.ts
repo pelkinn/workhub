@@ -30,9 +30,10 @@ async function bootstrap() {
   serverAdapter.setBasePath("/admin/queues");
 
   const testQueue = app.get(getQueueToken("test-queue"));
+  const remindersQueue = app.get(getQueueToken("reminders-queue"));
 
   createBullBoard({
-    queues: [new BullMQAdapter(testQueue)],
+    queues: [new BullMQAdapter(testQueue), new BullMQAdapter(remindersQueue)],
     serverAdapter,
   });
 
