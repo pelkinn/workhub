@@ -1,6 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "@/prisma/prisma.service";
 import { AuditLogAction, MembershipRole } from "@prisma/client";
+import { AuditLogResponseDto } from "./dto/audit-log-response.dto";
+import { UserResponseDto } from "@/auth/dto/user-response.dto";
 
 @Injectable()
 export class AuditService {
@@ -234,6 +236,31 @@ export class AuditService {
         taskId,
       },
     });
+  }
+
+  async findByProjectId(projectId: string): Promise<AuditLogResponseDto[]> {
+    const logs = await this.prisma.auditLog.findMany({
+      where: { projectId },
+      include: { user: true },
+      orderBy: { createdAt: "desc" },
+    });
+
+    return logs.map((log) => ({
+      id: log.id,
+      action: log.action,
+      data: log.data as object,
+      userId: log.userId,
+      user: {
+        id: log.user.id,
+        email: log.user.email,
+        name: log.user.name,
+      } as UserResponseDto,
+      createdAt: log.createdAt,
+      updatedAt: log.updatedAt,
+      projectId: log.projectId,
+      taskId: log.taskId,
+      membershipId: log.membershipId,
+    }));
   }
 }
 
