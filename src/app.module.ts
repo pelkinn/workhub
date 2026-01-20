@@ -8,9 +8,11 @@ import { MembershipsModule } from './memberships/memberships.module';
 import { TasksModule } from './tasks/tasks.module';
 import { InvitationsModule } from './invitations/invitations.module';
 import { QueuesModule } from './queues/queues.module';
+import { InboxModule } from './inbox/inbox.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
-  imports: [PrismaModule, AuthModule, ProjectModule, MembershipsModule, TasksModule, InvitationsModule, QueuesModule],
+  imports: [PrismaModule, AuthModule, ProjectModule, MembershipsModule, TasksModule, InvitationsModule, QueuesModule, InboxModule, NotificationsModule],
   controllers: [AppController],
   providers: [AppService],
 })

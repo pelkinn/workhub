@@ -82,6 +82,21 @@ describe("RBAC E2E Tests", () => {
       }
     }
 
+    // Cleanup additional test users created via upsert
+    const testUserEmails = [
+      "newuser@test.com",
+      "anotheruser@test.com",
+      "todelete@test.com",
+      "hierarchy@test.com",
+    ];
+    for (const email of testUserEmails) {
+      await prisma.user
+        .deleteMany({
+          where: { email },
+        })
+        .catch(() => {});
+    }
+
     await prisma.$disconnect();
     await app.close();
   });

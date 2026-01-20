@@ -7,14 +7,15 @@ datasource db {
 }
 
 model User {
-  id          String       @id @default(cuid())
-  email       String       @unique
-  password    String
-  name        String?
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  memberships Membership[]
-  auditLogs   AuditLog[]
+  id             String       @id @default(cuid())
+  email          String       @unique
+  password       String
+  name           String?
+  telegramChatId String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  memberships    Membership[]
+  auditLogs      AuditLog[]
 }
 
 model Project {
