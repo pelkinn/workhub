@@ -70,4 +70,14 @@ export class AuthController {
   async getMe(@CurrentUser() user: JwtUserDto): Promise<UserResponseDto> {
     return this.authService.getMe(user.userId);
   }
+
+  @Post("logout")
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: "Выход пользователя" })
+  @ApiResponse({ status: 200, description: "Пользователь успешно вышел из системы" })
+  @ApiResponse({ status: 401, description: "Не авторизован" })
+  async logout(@CurrentUser() user: JwtUserDto): Promise<void> {
+    return this.authService.logout(user.userId);
+  }
 }

@@ -125,4 +125,14 @@ export class AuthService {
       name: user.name,
     };
   }
+
+  async logout(userId: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      throw new UnauthorizedException("Пользователь не найден");
+    }
+  }
 }
