@@ -27,6 +27,9 @@ ENV NODE_ENV=production
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev && npm cache clean --force
 
+# ВАЖНО: prisma client artifacts
+COPY --from=build /app/node_modules/.prisma ./node_modules/.prisma
+
 # Собранный код
 COPY --from=build /app/dist ./dist
 
