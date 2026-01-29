@@ -33,8 +33,8 @@ COPY --from=build /app/node_modules/.prisma ./node_modules/.prisma
 # Собранный код
 COPY --from=build /app/dist ./dist
 
-# Если у тебя есть prisma/migrations/ и они нужны в рантайме — добавим позже
-# COPY --from=build /app/prisma ./prisma
+# Prisma schema + migrations for deploys/runtime
+COPY --from=build /app/prisma ./prisma
 
 EXPOSE 3000
 CMD ["node", "dist/src/main.js"]
