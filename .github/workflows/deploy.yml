@@ -46,3 +46,15 @@ jobs:
             cd /opt/workhub/infra
             docker compose -f docker-compose.prod.yml --env-file /opt/workhub/env/.env pull backend
             docker compose -f docker-compose.prod.yml --env-file /opt/workhub/env/.env up -d
+      - name: Run migrations over SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          script: |
+            set -e
+            cd /opt/workhub/infra
+            until docker compose -f docker-compose.prod.yml --env-file /opt/workhub/env/.env exec -T postgres sh -lc 'pg_isready -U "$POSTGRES_USER" -d "$POSTGRES_DB"'; do sleep 2; done
+            docker compose -f docker-compose.prod.yml --env-file /opt/workhub/env/.env exec -T backend sh -lc 'npx prisma migrate deploy --schema /app/prisma/schema.prisma'
